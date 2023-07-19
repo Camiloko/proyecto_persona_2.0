@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block head_title %}
+Login/Registro
+{% endblock %}
+{% block content %}
+    <div class="col">
+        {% include "users/auth/register_form.html" %}
+    </div>
+
+    <div class="col">
+        {% include "users/auth/login_form.html" %}
+    </div>
+{% endblock %}

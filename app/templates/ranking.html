@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ranking de Gráficos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .graph-info {
+            display: flex;
+            align-items: center;
+        }
+        .graph-info h3 {
+            margin-right: 20px;
+        }
+        .graph-info p {
+            margin-bottom: 0;
+        }
+        .graph-info img {
+            max-width: 200px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Ranking de Gráficos</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('upload') }}">Inicio</a>
+                    </li>
+                    {% if request.path != url_for('create_graph') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('create_graph') }}">Crear Gráfico</a>
+                    </li>
+                    {% endif %}
+                    {% if request.path != url_for('ranking_graficos') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('ranking_graficos') }}">Ranking</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Ranking de Gráficos Más Usados</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo de Gráfico</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grafico in ranking %}
+                <tr>
+                    <td>{{ grafico.tipo_grafico|upper }}</td>
+                    <td>{{ grafico.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="container">
+                        <div class="row">
+                            
+                                <h3>Información del Gráfico</h3>
+                                <div class="list-group" style="max-height: 400px; overflow: auto;">
+                                    <div class="row">
+                                        {% for grafico in ranking %}
+                                        <div class="col-lg-4">
+                                            <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#infoModal_{{ grafico.tipo_grafico }}">
+                                                {{ grafico.tipo_grafico|upper }}
+                                                <img src="{{ url_for('static', filename='images/' + grafico.tipo_grafico + '.png') }}" alt="{{ grafico.tipo_grafico }}" class="img-fluid">
+                                            </a>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    
+
+            <div class="col-lg-6">
+                {% for grafico in ranking %}
+                <div id="infoModal_{{ grafico.tipo_grafico }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel_{{ grafico.tipo_grafico }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="infoModalLabel_{{ grafico.tipo_grafico }}">{{ grafico.tipo_grafico|upper }}</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {% if grafico.tipo_grafico == 'barras' %}
+                                    <p>El gráfico de barras utiliza barras rectangulares para representar valores numéricos o categóricos. Cada barra representa una categoría o variable, y su altura indica el valor correspondiente.</p>
+                                    <h4>Usos:</h4>
+                                    <ul>
+                                        <li>Comparación de valores entre categorías.</li>
+                                        <li>Análisis de tendencias y cambios en los datos.</li>
+                                        <li>Visualización de la distribución de datos.</li>
+                                    </ul>
+                                    <p>El eje X representa las categorías o variables, y el eje Y representa los valores.</p>
+                                {% elif grafico.tipo_grafico == 'lineas' %}
+                                    <p>El gráfico de líneas muestra la relación y la tendencia de los datos a lo largo del tiempo. Utiliza líneas para conectar puntos que representan los valores de una variable en diferentes momentos.</p>
+                                    <h4>Usos:</h4>
+                                    <ul>
+                                        <li>Análisis de la evolución y las tendencias a lo largo del tiempo.</li>
+                                        <li>Identificación de patrones y cambios en los datos.</li>
+                                        <li>Visualización de correlaciones y relaciones entre variables.</li>
+                                    </ul>
+                                    <p>El eje X representa las fechas o variables de tiempo, y el eje Y representa los valores.</p>
+                                {% elif grafico.tipo_grafico == 'pastel' %}
+                                    <p>El gráfico de pastel muestra la proporción o porcentaje de diferentes categorías dentro de un conjunto de datos. Se utiliza para visualizar la distribución de valores de una variable en relación con el todo.</p>
+                                    <h4>Usos:</h4>
+                                    <ul>
+                                        <li>Representación visual de la proporción de categorías en un conjunto de datos.</li>
+                                        <li>Comparación de las partes en relación con el todo.</li>
+                                        <li>Destacar la importancia o prevalencia de una categoría específica.</li>
+                                    </ul>
+                                    <p>El gráfico de pastel utiliza una sola columna de datos.</p>
+                                {% elif grafico.tipo_grafico == 'dispersion' %}
+                                    <p>El gráfico de dispersión muestra la relación y la distribución de dos variables numéricas. Cada punto en el gráfico representa una pareja de valores, uno para cada variable.</p>
+                                    <h4>Usos:</h4>
+                                    <ul>
+                                        <li>Visualización de la correlación y la relación entre dos variables.</li>
+                                        <li>Análisis de patrones o agrupamientos en los datos.</li>
+                                        <li>Identificación de valores atípicos o excepciones.</li>
+                                    </ul>
+                                    <p>Tanto el eje X como el eje Y representan valores numéricos.</p>
+                                {% else %}
+                                <p>El gráfico de areas, al igual
+                                    que el grafico de lineas, muestra la relación y la tendencia de los
+                                     datos a lo largo del tiempo. 
+                                     Utiliza líneas para conectar puntos que 
+                                     representan los valores de una variable en diferentes momentos.</p>
+                                <h4>Usos:</h4>
+                                <ul>
+                                    <li>Análisis de la evolución y las tendencias a lo largo del tiempo.</li>
+                                    <li>Identificación de patrones y cambios en los datos.</li>
+                                    <li>Facilidad para detectar cambios en cortos periodos de tiempos.</li>
+                                </ul>
+                                <p>El eje X representa las fechas o variables de tiempo, y el eje Y representa los valores.</p>
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

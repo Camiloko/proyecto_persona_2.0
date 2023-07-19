@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block head_title %}{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+    <style>
+        body {
+                    background-image: url("static/images/background.jpg");
+                    background-size: cover;
+                    background-position: center;
+                    }
+    </style>
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+{% include 'includes/messages.html' %}
+<div class="container my-5">
+    <div class="row">
+
+
+            {% include 'includes/navbar.html' %}
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>

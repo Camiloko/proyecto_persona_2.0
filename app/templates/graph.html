@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navbar {
+            height: 50px;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar-brand {
+            font-size: 18px;
+        }
+        
+        .navbar-right {
+            margin-left: auto;
+        }
+        
+        .custom-button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        
+        .custom-button:hover {
+            background-color: #0056b3;
+            cursor: pointer;
+        }
+        
+        #stat-modal .modal-dialog {
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/upload">Regresar</a>
+            <div class="navbar-right">
+                <button class="custom-button" id="stat-button" data-toggle="modal" data-target="#stat-modal">Mostrar Estadísticas</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if chart_config_json %}
+        <canvas id="myChart"></canvas>
+        {% else %}
+        <p>No hay datos disponibles para mostrar el gráfico.</p>
+        {% endif %}
+        <div id="stat-modal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Información Estadística</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Promedio: <span id="mean-value"></span></p>
+                        <p>Mediana: <span id="median-value"></span></p>
+                        <p>Primer y Cuarto Cuartil  : <span id="quartiles-value"></span></p>
+                        <p>Rango: <span id="range-value"></span></p>
+                        <p>Varianza: <span id="variance-value"></span></p>
+                        <p>Máximo: <span id="max-value"></span></p>
+                        <p>Mínimo: <span id="min-value"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Obtener el JSON de configuración del gráfico desde Flask
+        var chartConfig = JSON.parse('{{ chart_config_json|safe }}');
+    
+        // Crear el gráfico utilizando Chart.js
+        var ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, chartConfig);
+        
+        // Obtén el botón y la ventana modal
+        var statButton = document.getElementById('stat-button');
+        var statModal = document.getElementById('stat-modal');
+
+         // Determinar si se debe mostrar u ocultar el botón según el tipo de gráfico
+        var chartType = chartConfig.type;
+        if (chartType === 'scatter' || chartType === 'pie') {
+            statButton.style.display = 'none'; // Ocultar el botón
+        }
+
+        // Escucha el evento clic del botón para mostrar la ventana modal
+        statButton.addEventListener('click', function() {
+            $(statModal).modal('show');
+        });
+
+        // Calcula y muestra las estadísticas en la ventana modal
+        var chartData = chartConfig.data.datasets[0].data;
+        if (chartType !== 'scatter' && chartType !== 'pie') {
+            document.getElementById('mean-value').textContent = calculateMean(chartData);
+            document.getElementById('median-value').textContent = calculateMedian(chartData);
+            document.getElementById('quartiles-value').textContent = calculateQuartiles(chartData);
+            document.getElementById('range-value').textContent = calculateRange(chartData);
+            document.getElementById('variance-value').textContent = calculateVariance(chartData);
+            document.getElementById('max-value').textContent = calculateMax(chartData);
+            document.getElementById('min-value').textContent = calculateMin(chartData);
+        }
+
+
+        // Funciones para calcular las estadísticas
+        function calculateMean(data) {
+            var sum = data.reduce(function(acc, value) {
+                return acc + value;
+            }, 0);
+            return (sum / data.length).toFixed(2);
+        }
+
+        function calculateMedian(data) {
+            var sortedData = data.slice().sort(function(a, b) {
+                return a - b;
+            });
+            var middle = Math.floor(sortedData.length / 2);
+            if (sortedData.length % 2 === 0) {
+                return ((sortedData[middle - 1] + sortedData[middle]) / 2).toFixed(2);
+            } else {
+                return sortedData[middle].toFixed(2);
+            }
+        }
+
+        function calculateQuartiles(data) {
+            var sortedData = data.slice().sort(function(a, b) {
+                return a - b;
+            });
+            var q1Index = Math.floor(sortedData.length * 0.25);
+            var q3Index = Math.floor(sortedData.length * 0.75);
+            var q1 = sortedData[q1Index].toFixed(2);
+            var q3 = sortedData[q3Index].toFixed(2);
+            return q1 + ', ' + q3;
+        }
+
+        function calculateRange(data) {
+            var sortedData = data.slice().sort(function(a, b) {
+                return a - b;
+            });
+            var min = sortedData[0].toFixed(2);
+            var max = sortedData[sortedData.length - 1].toFixed(2);
+            return min + ' - ' + max;
+        }
+
+        function calculateVariance(data) {
+            var mean = calculateMean(data);
+            var sumSquaredDiff = data.reduce(function(acc, value) {
+                var diff = value - mean;
+                return acc + (diff * diff);
+            }, 0);
+            var variance = (sumSquaredDiff / data.length).toFixed(2);
+            return variance;
+        }
+
+        function calculateMax(data) {
+            return Math.max(...data).toFixed(2);
+        }
+
+        function calculateMin(data) {
+            return Math.min(...data).toFixed(2);
+        }
+    </script>
+</body>
+</html>

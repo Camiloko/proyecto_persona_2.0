@@ -1,0 +1,87 @@
+#container {
+    margin: 20px auto;
+    border: 5px black;
+    border-width: 5px;
+}
+
+.col {
+    margin-bottom: 20px;
+}
+
+#poke-history,
+#users-to-poke {
+    margin-bottom: 40px;
+    border: black;
+    border-width: 5px;
+}
+
+#poke-history{
+    max-width:fit-content;
+    border: 1px black solid;
+    border-width: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 5px solid #4e3838;
+    border-width: 2px;
+}
+
+th {
+    background-color: #f2f2f2;
+    border: solid black;
+    border-width:2px;
+}
+
+button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+button:hover {
+    background-color: #f2f2f2;
+}
+
+
+/* Estilos para el detalle del viaje */
+.trip-details {
+    margin-bottom: 20px;
+}
+
+.trip-details h5 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.trip-details p {
+    margin-bottom: 5px;
+}
+
+.trip-details .fw-bold {
+    font-weight: bold;
+}
+
+/* Estilos para la lista de usuarios */
+.user-list {
+    margin-top: 20px;
+}
+
+.user-list h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.user-list ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.user-list li {
+    margin-bottom: 5px;
+}
