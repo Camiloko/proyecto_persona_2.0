@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             selectTipoGrafico.innerHTML = `
                 <option value="">Seleccione un tipo de gráfico</option>
                 <option value="barras">Gráfico de Barras</option>
+                <option value="pastel">Gráfico de Pastel</option>
             `;
 
             selectTipoGrafico.addEventListener('change', function () {
@@ -47,6 +48,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label for="columna_x">Columna X (Categorias):</label>
                         <input type="text" class="form-control" name="columna_x" id="columna_x" required>
                         <br><br>
+                        <label for="columna_y">Columna Y (Valores):</label>
+                        <input type="text" class="form-control" name="columna_y" id="columna_y" required>
+                    `;
+
+                    columnasSection.style.display = '';
+                } else if (tipoGraficoSeleccionado === 'pastel') {
+                    columnasSection.innerHTML = `
+                        
                         <label for="columna_y">Columna Y (Valores):</label>
                         <input type="text" class="form-control" name="columna_y" id="columna_y" required>
                     `;

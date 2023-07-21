@@ -56,7 +56,8 @@ class grafico:
 
     @classmethod
     def process_excel(cls,datos, columna_x, columna_y, tipo_grafico):
-
+            # Si solo se recibe una columna de datos, contar las categorías y generar el gráfico de pastel automáticamente
+        
 
         if tipo_grafico == 'area':
             chart_config = {
@@ -104,35 +105,27 @@ class grafico:
             }
             ##
         elif tipo_grafico == 'pastel':
-            if columna_y:
-                # Gráfico de pastel con columna Y
-                chart_config = {
-                    'type': 'pie',
-                    'data': {
-                        'labels': datos[columna_x].tolist(),
-                        'datasets': [{
-                            'data': datos[columna_y].tolist(),
-                            'backgroundColor': ['rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(255, 99, 132, 0.2)'],
-                            'borderColor': ['rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(255, 99, 132, 1)'],
-                            'borderWidth': 1
-                        }]
-                    }
+           # Contar la frecuencia de cada categoría en columna_y
+            conteo_categorias = datos[columna_y].value_counts()
+
+            # Obtener las etiquetas (nombres de las categorías) y valores del gráfico de pastel
+            labels = conteo_categorias.index.tolist()
+            valores = conteo_categorias.values.tolist()
+
+            # Gráfico de pastel
+            chart_config = {
+                'type': 'pie',
+                'data': {
+                    'labels': labels,
+                    'datasets': [{
+                        'data': valores,
+                        'backgroundColor': ['rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                        'borderColor': ['rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(255, 99, 132, 1)'],
+                        'borderWidth': 1
+                    }]
                 }
-            else:
-                # Gráfico de pastel sin columna Y
-                chart_config = {
-                    'type': 'pie',
-                    'data': {
-                        'labels': datos[columna_x].tolist(),
-                        'datasets': [{
-                            'data': [1] * len(datos[columna_x]),
-                            'backgroundColor': ['rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(255, 99, 132, 0.2)'],
-                            'borderColor': ['rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(255, 99, 132, 1)'],
-                            'borderWidth': 1
-                        }]
-                    }
-                }
-            ##
+            }
+
         elif tipo_grafico == 'barras':
             datos_agrupados = datos.groupby(columna_x)[columna_y].sum().tolist()
             if columna_y:
