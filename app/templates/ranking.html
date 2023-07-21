@@ -35,6 +35,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('upload') }}">Inicio</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('gantt') }}">Diagrama Gantt</a>
+                    </li>
                     {% if request.path != url_for('create_graph') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('create_graph') }}">Crear Gráfico</a>

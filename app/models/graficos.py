@@ -125,7 +125,7 @@ class grafico:
                     }]
                 }
             }
-
+    
         elif tipo_grafico == 'barras':
             datos_agrupados = datos.groupby(columna_x)[columna_y].sum().tolist()
             if columna_y:

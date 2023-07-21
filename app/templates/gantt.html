@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generador de Gráficos de Gantt</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 30px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            margin-top: 10px;
+        }
+
+        #ganttChart {
+            margin-top: 30px;
+        }
+
+        .compact-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .compact-form .form-group {
+            flex: 0 0 calc(50% - 10px);
+            margin-bottom: 10px;
+        }
+
+        .compact-form .form-group:last-child {
+            flex-basis: 100%;
+        }
+
+        .tutorial {
+            text-align: center;
+            font-size: 18px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .view-options {
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generador de Gráficos de Gantt</h1>
+        <button class="btn btn-primary" onclick="mostrarTutorial()">Ayuda</button>
+        <div class="compact-form">
+            <div class="form-group">
+                <label for="taskName">Nombre de la Tarea:</label>
+                <input type="text" class="form-control" id="taskName">
+            </div>
+            <div class="form-group">
+                <label for="startDate">Fecha de Inicio:</label>
+                <input type="date" class="form-control" id="startDate">
+            </div>
+            <div class="form-group">
+                <label for="endDate">Fecha de Finalización:</label>
+                <input type="date" class="form-control" id="endDate">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" onclick="agregarTarea()">Agregar Tarea</button>
+            </div>
+        </div>
+
+        <div class="view-options">
+            <h3>Opciones de Visualización</h3>
+            <div class="compact-form">
+                <div class="form-group">
+                    <label for="viewMode">Modo de Visualización:</label>
+                    <select class="form-control" id="viewMode" onchange="cambiarModoVisualizacion()">
+                        <option value="Quarter Day">Cuarto de Día</option>
+                        <option value="Half Day">Medio Día</option>
+                        <option value="Day">Día</option>
+                        <option value="Week">Semana</option>
+                        <option value="Month">Mes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="viewStart">Fecha de Inicio de la Vista:</label>
+                    <input type="date" class="form-control" id="viewStart" onchange="cambiarFechaVista()">
+                </div>
+                <div class="form-group">
+                    <label for="viewEnd">Fecha de Finalización de la Vista:</label>
+                    <input type="date" class="form-control" id="viewEnd" onchange="cambiarFechaVista()">
+                </div>
+            </div>
+        </div>
+
+        <div id="ganttChart"></div>
+    </div>
+
+    <!-- Ventana Modal para el Tutorial -->
+    <div class="modal" id="tutorialModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tutorial - Generador de Gráficos de Gantt</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="tutorial">
+                        <p>Bienvenido al Generador de Gráficos de Gantt. Aquí puedes crear y visualizar tareas con sus fechas de inicio y finalización en un gráfico de Gantt.</p>
+                        <p>Para comenzar, ingresa el nombre de la tarea, la fecha de inicio y la fecha de finalización en los campos proporcionados a continuación. Luego, haz clic en el botón "Agregar Tarea".</p>
+                        <p>Selecciona el "Modo de Visualización" en el menú desplegable para cambiar la forma en que se muestra el gráfico de Gantt. También puedes ajustar el rango de fechas de la vista utilizando los campos "Fecha de Inicio de la Vista" y "Fecha de Finalización de la Vista".</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.js"></script>
+    <script src="{{ url_for('static', filename='js/gantt.js') }}"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

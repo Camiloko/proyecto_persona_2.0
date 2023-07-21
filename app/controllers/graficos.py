@@ -83,3 +83,12 @@ def ranking_graficos():
     
     resultados = grafico.ranking_graficos()
     return render_template('ranking.html', ranking=resultados)
+
+
+@app.route('/gantt')
+def gantt():
+    # Proteger la ruta /logout/
+    if "user" not in session:
+        return redirect(url_for("index"))
+    
+    return render_template('gantt.html')
