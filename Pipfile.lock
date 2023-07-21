@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "692e0925f25725b2d3cd084de755044dff7a176bd125cf78141c132c1aa7b625"
+            "sha256": "3c2e40f060ee294d7bd3cf3337e7a41b7735146e228e49df1017bd2be8571d70"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.9.5"
+            "python_version": "3.11"
         },
         "sources": [
             {
@@ -53,11 +53,11 @@
         },
         "click": {
             "hashes": [
-                "sha256:4be4b1af8d665c6d942909916d31a213a106800c47d0eeba73d34da3cbc11367",
-                "sha256:e576aa487d679441d7d30abb87e1b43d24fc53bffb8758443b1a9e1cee504548"
+                "sha256:48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd",
+                "sha256:fa244bb30b3b5ee2cae3da8f55c9e5e0c0e86093306301fb418eb9dc40fbded5"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==8.1.5"
+            "version": "==8.1.6"
         },
         "colorama": {
             "hashes": [
@@ -90,14 +90,6 @@
             ],
             "index": "pypi",
             "version": "==1.0.1"
-        },
-        "importlib-metadata": {
-            "hashes": [
-                "sha256:3ebb78df84a805d7698245025b975d9d67053cd94c79245ba4b3eb694abe68bb",
-                "sha256:dbace7892d8c0c4ac1ad096662232f831d4e64f4c4545bd53016a3e9d4654743"
-            ],
-            "markers": "python_version < '3.10'",
-            "version": "==6.8.0"
         },
         "itsdangerous": {
             "hashes": [
@@ -199,7 +191,7 @@
                 "sha256:f76aebc3358ade9eacf9bc2bb8ae589863a4f911611694103af05346637df1b7",
                 "sha256:fd67b306320dcadea700a8f79b9e671e607f8696e98ec255915c0c6d6b818503"
             ],
-            "markers": "python_version < '3.10'",
+            "markers": "python_version >= '3.10'",
             "version": "==1.25.1"
         },
         "openpyxl": {
@@ -295,14 +287,6 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.3.6"
-        },
-        "zipp": {
-            "hashes": [
-                "sha256:679e51dd4403591b2d6838a48de3d283f3d188412a9782faadf845f298736ba0",
-                "sha256:ebc15946aa78bd63458992fc81ec3b6f7b1e92d51c35e6de1c3804e73b799147"
-            ],
-            "markers": "python_version >= '3.8'",
-            "version": "==3.16.2"
         }
     },
     "develop": {}
