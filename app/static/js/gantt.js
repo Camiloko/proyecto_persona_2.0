@@ -1,108 +1,62 @@
-        const tasks = [];
+ // Código JavaScript para generar el gráfico de Gantt
 
-        function agregarTarea() {
-            const taskName = document.getElementById("taskName").value;
-            const startDate = document.getElementById("startDate").value;
-            const endDate = document.getElementById("endDate").value;
+ let tasks = [];
+ let ganttContainer;
+ let gantt;
 
-            if (taskName && startDate && endDate) {
-                tasks.push({
-                    id: tasks.length + 1,
-                    name: taskName,
-                    start: new Date(startDate),
-                    end: new Date(endDate),
-                    progress: 0,
-                });
+ // Variable para almacenar la tarea seleccionada al hacer clic
+ let selectedTask = null;
 
-                document.getElementById("taskName").value = "";
-                document.getElementById("startDate").value = "";
-                document.getElementById("endDate").value = "";
+ function agregarTarea() {
+     let taskName = document.getElementById("taskName").value;
+     let startDate = document.getElementById("startDate").value;
+     let endDate = document.getElementById("endDate").value;
 
-                dibujarGantt();
-            } else {
-                alert("Por favor, completa todos los campos.");
-            }
-        }
+     if (taskName && startDate && endDate) {
+         tasks.push({
+             id: 'Task ' + (tasks.length + 1),
+             name: taskName,
+             start: startDate,
+             end: endDate,
+             progress: 0,
+         });
 
-        function dibujarGantt() {
-            const ganttContainer = document.getElementById("ganttChart");
-            ganttContainer.innerHTML = "";
+         document.getElementById("taskName").value = "";
+         document.getElementById("startDate").value = "";
+         document.getElementById("endDate").value = "";
 
-            const gantt = new Gantt(ganttContainer, tasks, {
-                header_height: 50,
-                column_width: 30,
-                step: 24,
-                view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
-                bar_height: 20,
-                bar_corner_radius: 3,
-                arrow_curve: 5,
-                padding: 18,
-                view_mode: 'Week',
-                date_format: 'YYYY-MM-DD',
-                custom_popup_html: function (task) {
-                    return '<div class="details-container">' +
-                        '<h5>' + task.name + '</h5>' +
-                        '<p>Fecha de Inicio: ' + task._start.format('YYYY-MM-DD') + '</p>' +
-                        '<p>Fecha de Finalización: ' + task._end.format('YYYY-MM-DD') + '</p>' +
-                        '</div>';
-                }
-            });
+         dibujarGantt();
+     } else {
+         alert("Por favor, completa todos los campos.");
+     }
+ }
 
-            gantt.change_view_mode('Week');
-        }
+ function dibujarGantt() {
+     ganttContainer = document.getElementById("ganttChart");
+     ganttContainer.innerHTML = "";
 
-        function cambiarModoVisualizacion() {
-            const viewMode = document.getElementById("viewMode").value;
-            const ganttContainer = document.getElementById("ganttChart");
-            ganttContainer.innerHTML = "";
-            const gantt = new Gantt(ganttContainer, tasks, {
-                view_mode: viewMode,
-                date_format: 'YYYY-MM-DD',
-                custom_popup_html: function (task) {
-                    return '<div class="details-container">' +
-                        '<h5>' + task.name + '</h5>' +
-                        '<p>Fecha de Inicio: ' + task._start.format('YYYY-MM-DD') + '</p>' +
-                        '<p>Fecha de Finalización: ' + task._end.format('YYYY-MM-DD') + '</p>' +
-                        '</div>';
-                }
-            });
-        }
+     gantt = new Gantt("#ganttChart", tasks, {
+         on_click: function(task) {
+             if (task) {
+                 // Guardar la tarea seleccionada
+                 selectedTask = task;
+                 // Mostrar el selector de color
+                 document.getElementById("colorSelector").click();
+             }
+         },
+     });
+ }
 
-        function cambiarFechaVista() {
-            const viewStart = document.getElementById("viewStart").value;
-            const viewEnd = document.getElementById("viewEnd").value;
-            const ganttContainer = document.getElementById("ganttChart");
-            ganttContainer.innerHTML = "";
-            const gantt = new Gantt(ganttContainer, tasks, {
-                view_mode: 'custom',
-                date_format: 'YYYY-MM-DD',
-                custom_popup_html: function (task) {
-                    return '<div class="details-container">' +
-                        '<h5>' + task.name + '</h5>' +
-                        '<p>Fecha de Inicio: ' + task._start.format('YYYY-MM-DD') + '</p>' +
-                        '<p>Fecha de Finalización: ' + task._end.format('YYYY-MM-DD') + '</p>' +
-                        '</div>';
-                },
-                start_date: viewStart,
-                end_date: viewEnd
-            });
-        }
-        function mostrarTutorial() {
-            const tutorialModal = document.getElementById("tutorialModal");
-            tutorialModal.style.display = "block";
-        }
-
-        window.addEventListener("load", function () {
-            const tutorialModal = document.getElementById("tutorialModal");
-            const closeButton = tutorialModal.querySelector(".close");
-
-            closeButton.addEventListener("click", function () {
-                tutorialModal.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target === tutorialModal) {
-                    tutorialModal.style.display = "none";
-                }
-            });
-        });
+ // Evento para cambiar el color de la barra al seleccionar un color en el selector
+ document.getElementById("colorSelector").addEventListener("input", function() {
+     if (selectedTask) {
+         // Obtener el color seleccionado y aplicarlo a la barra
+         let color = this.value;
+         let bar = gantt.get_bar(selectedTask.id);
+         if (bar) {
+             bar.$bar.style.fill = color;
+         }
+         // Reiniciar la tarea seleccionada
+         selectedTask = null;
+     }
+ });

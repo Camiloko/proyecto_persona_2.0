@@ -1,0 +1,14 @@
+{
+  "name": "frappe-gantt",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000p\u0000r\u0000o\u0000y\u0000e\u0000c\u0000t\u0000o\u0000_\u0000p\u0000e\u0000r\u0000s\u0000o\u0000n\u0000a\u0000_\u00002\u0000.\u00000\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "frappe-gantt": "^0.6.1"
+  }
+}
