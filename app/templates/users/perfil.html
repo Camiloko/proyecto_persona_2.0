@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Pagina de Perfil{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <h1 class="mt-4">Paso #1: Ingresar Cliente</h1>
+    
+    <form action="/guardar_cliente" method="POST">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="profesion">Profesion:</label>
+            <input type="text" class="form-control" id="profesion" name="profesion">
+        </div>
+        
+        <div class="form-group">
+            <label for="edad">Edad:</label>
+            <input type="text" class="form-control" id="edad" name="edad">
+        </div>
+
+        
+        """nose como hacer este select con el tipo de grafico"""
+        
+        <select name="tipo-grafico"> 
+        {% for relleno in rellenos %}
+        <option value="{{ relleno.id }}">{{ relleno.nombre_relleno }}</option>
+        {% endfor %}
+        </select>
+        
+
+    </form>
+    
+</div>
+
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}
