@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Perfil de Usuario</title>
+    <!-- Agregar el enlace al archivo CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Perfil de Usuario</h1>
+        {% if perfil %}
+            <h2>Tu Perfil</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nombre:</strong> {{ perfil.first_name }}</p>
+                    <p><strong>Edad:</strong> {{ perfil.edad }}</p>
+                    <p><strong>Género:</strong> {{ perfil.genero }}</p>
+                    <p><strong>Profesion:</strong> {{ perfil.profesion }}</p>
+                </div>
+            </div>
+        {% else %}
+            <h2>Rellena tu Perfil</h2>
+            <form action="/perfil" method="post">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="genero">Género:</label>
+                    <select class="form-control" id="genero" name="genero" required>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="profesion">Profesion:</label>
+                    <input type="text" class="form-control" id="profesion" name="profesion" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar Perfil</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <!-- Agregar el enlace al archivo JavaScript de Bootstrap (opcional) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

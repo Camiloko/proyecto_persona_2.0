@@ -3,6 +3,8 @@
 <head>
     <title>Generador de Gráficos de Gantt</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/frappe-gantt.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -18,87 +20,18 @@
             <label for="endDate">Fecha de Finalización:</label>
             <input type="date" id="endDate">
 
-            <button onclick="agregarTarea()">Agregar Tarea</button>
+            <button onclick="dibujarYGuardarTarea()">Agregar Tarea</button>
         </div>
 
-        <!-- Gráfico de Gantt en un elemento SVG -->
         <svg id="ganttChart" width="800" height="400"></svg>
 
-        <!-- Selector de color oculto -->
         <input type="color" id="colorSelector" style="display: none;">
     </div>
 
-    <!-- Dependencias de frappe-gantt -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
     <script src="{{ url_for('static', filename='js/frappe-gantt.js') }}"></script>
-    <script>
-        // Código JavaScript para generar el gráfico de Gantt
-
-        let tasks = [];
-        let ganttContainer;
-        let gantt;
-
-        // Variable para almacenar la tarea seleccionada al hacer clic
-        let selectedTask = null;
-
-        function agregarTarea() {
-            let taskName = document.getElementById("taskName").value;
-            let startDate = document.getElementById("startDate").value;
-            let endDate = document.getElementById("endDate").value;
-
-            if (taskName && startDate && endDate) {
-                tasks.push({
-                    id: 'Task ' + (tasks.length + 1),
-                    name: taskName,
-                    start: startDate,
-                    end: endDate,
-                    progress: 0,
-                });
-
-                document.getElementById("taskName").value = "";
-                document.getElementById("startDate").value = "";
-                document.getElementById("endDate").value = "";
-
-                dibujarGantt();
-            } else {
-                alert("Por favor, completa todos los campos.");
-            }
-        }
-
-        function dibujarGantt() {
-            ganttContainer = document.getElementById("ganttChart");
-            ganttContainer.innerHTML = "";
-
-            gantt = new Gantt("#ganttChart", tasks, {
-                on_click: function(task) {
-                    if (task) {
-                        // Guardar la tarea seleccionada
-                        selectedTask = task;
-                        // Mostrar el selector de color
-                        document.getElementById("colorSelector").click();
-                    }
-                },
-            });
-        }
-
-        // Evento para cambiar el color de la barra al seleccionar un color en el selector
-        document.getElementById("colorSelector").addEventListener("input", function() {
-            if (selectedTask) {
-                // Obtener el color seleccionado y aplicarlo a la barra
-                let color = this.value;
-                let bar = gantt.get_bar(selectedTask.id);
-                if (bar) {
-                    bar.$bar.style.fill = color;
-                }
-                // Reiniciar la tarea seleccionada
-                selectedTask = null;
-            }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/gantt.js') }}"></script>
+    
 </body>
 </html>
-
-
-
-
